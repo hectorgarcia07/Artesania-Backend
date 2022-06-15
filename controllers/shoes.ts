@@ -14,18 +14,33 @@ Router.get('/', async(_req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.get('/:id', async(req, res) => {
-  const id:string = req.params.id;
-  const shoes = await shoeServices.getSpecificShoe(id);
-  res.json(shoes);
+  try{
+    const id:string = req.params.id;
+    const shoes = await shoeServices.getSpecificShoe(id);
+    res.json(shoes);
+  }catch(e: unknown){
+    let err = "Error getting all shoes: ";
+    if(e instanceof Error){
+      err += e.message;
+    }
+    res.status(400).json({error: err});
+  }
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.post('/', async (req, res) => {
-  const shoesObj:Shoe = paramsCheck(req.body);
-  const newShoeObj = await shoeServices.addNewShoe(shoesObj);
-  console.log('saved', newShoeObj);
-
-  res.status(201).json(newShoeObj);
+  try{
+    const shoesObj:Shoe = paramsCheck(req.body);
+    const newShoeObj = await shoeServices.addNewShoe(shoesObj);
+    console.log('saved', newShoeObj);
+    res.status(201).json(newShoeObj);
+  }catch(e: unknown){
+    let err = "Error posting: ";
+    if(e instanceof Error){
+      err += e.message;
+    }
+    res.status(400).json({error: err});
+  }
 });
 
 //updates the entire object
@@ -33,7 +48,9 @@ Router.post('/', async (req, res) => {
 Router.put('/:id', async(req, res) => {
   const id:string = req.params.id;
   const shoesObj:Shoe = paramsCheck(req.body);
+  console.log("BEFORE UPDATE", shoesObj);
   const updatedShoe = await shoeServices.updateNewShoe(id, shoesObj);
+  console.log('AFTERUPDATE', updatedShoe);
   res.json(updatedShoe);
 });
 

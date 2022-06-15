@@ -1,31 +1,28 @@
-import {Shoe, Gender, Size} from '../types/shoe';
-/*
-  {
-    name, color, price, gender,
-    size: [ { number, quantity } ]
-  }
-*/
+import {Shoe, Gender, Size, Age} from '../types/shoe';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramsCheck = (obj: any):Shoe => {
+  console.log("Backend", obj);
   const newShoeObj:Shoe = {
     name: isName(obj.name),
     color: isColor(obj.color),
     price: isPrice(obj.price),
     gender: isGender(obj.gender),
-    sizes: isValidSize(obj.size)
+    age: isAge(obj.age),
+    sizes: isValidSizeArray(obj.sizes)
   };
   return newShoeObj;
 };
 
-const isValidSize = (size:unknown):Size[] => {
-  if(!Array.isArray(size)){
+const isValidSizeArray = (sizes:unknown):Size[] => {
+  if(!Array.isArray(sizes)){
     throw new Error('No Size was provided');
   }
-  if(!size.every(obj => isValidSizeObj(obj))){
+  if(!sizes.every(size => isValidSizeObj(size))){
     throw new Error('Error in the size/quantity format');
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const newSize:Size[] = size;
+  const newSize:Size[] = sizes;
   return newSize;
 };
 
@@ -46,6 +43,17 @@ const isGender = (gender:unknown):Gender => {
 
 const checkIsValidGender = (gender:string):gender is Gender => {
   return ['male', 'female', 'unisex'].includes(gender);
+};
+
+const isAge = (age:unknown):Age => {
+  if(!age || !isString(age) || !checkIsValidAge(age)){
+    throw new Error("Error: age must be adult, kid");
+  }
+  return age;
+};
+
+const checkIsValidAge = (age:string): age is Age => {
+  return ['adult', 'kid'].includes(age);
 };
 
 const isPrice = (price:unknown):number  =>{

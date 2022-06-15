@@ -3,6 +3,7 @@ export interface Shoe {
   color: string;
   price: number;
   gender: Gender;
+  age: Age;
   sizes: Array<Size>;
 }
 
@@ -12,3 +13,4 @@ export interface Size {
 }
 
 export type Gender = 'male' | 'female' | 'unisex';
+export type Age = 'adult' | 'kid';

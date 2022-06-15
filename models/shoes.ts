@@ -13,6 +13,7 @@ const shoeSchema = new mongoose.Schema<Shoe>({
   color: { type: String, required: true },
   price: { type: Number, required: true },
   gender: { type: String, enum: ['male', 'female', 'unixex'], required: true },
+  age: { type: String, enum: ['adult', 'kid'], required: true},
   sizes: [sizeSchema]
 });
 

@@ -1,25 +1,19 @@
 import { Shoe } from '../types/shoe';
 import ShoeModel from '../models/shoes';
 
-const addNewShoe = async (shoeObj:Shoe):Promise<Shoe> => {
-  try{
-    const newShoe = new ShoeModel.Shoe({
-      name: shoeObj.name,
-      color: shoeObj.color,
-      price: shoeObj.price,
-      gender: shoeObj.gender,
-      sizes: shoeObj.sizes
-    });
-    const result = await newShoe.save();
-    console.log(result);
-    return result;
-  }catch(e: unknown){
-    let message = 'Error saving ';
-    if(e instanceof Error){
-      message += e.message;
-    }
-    throw new Error(message);
-  }
+const addNewShoe = async (shoeObj:Shoe) => {
+  const newShoe = new ShoeModel.Shoe({
+    name: shoeObj.name,
+    color: shoeObj.color,
+    price: shoeObj.price,
+    gender: shoeObj.gender,
+    age: shoeObj.age,
+    sizes: shoeObj.sizes.sort((a,b) => b.size-a.size)
+  });
+  const result = await newShoe.save();
+  console.log(result);
+
+  return newShoe;
 };
 
 const updateNewShoe = async(id:string, obj:Shoe) => {
