@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import 'dotenv/config';
+import dotenv from "dotenv";
 const aws = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
+dotenv.config();
 
 aws.config.update({
   secretAccessKey: process.env.AWSKEY,
