@@ -18,6 +18,7 @@ const addNewShoe = async (shoeObj:Shoe) => {
 
 const updateNewShoe = async(id:string, obj:Shoe) => {
   try{
+    obj.sizes.sort((a,b) => b.size-a.size);
     const updatedShoe = await ShoeModel.Shoe.findByIdAndUpdate(id, obj, { new: true });
     return updatedShoe;
   }catch(e: unknown){

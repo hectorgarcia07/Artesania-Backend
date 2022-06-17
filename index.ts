@@ -7,7 +7,7 @@ import middleware from './utils/middleware';
 require('express-async-errors');
 
 const url = process.env.MONGODB_URI!;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3003;
 const app = express();
 
 app.use(cors());

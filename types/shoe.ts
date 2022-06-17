@@ -6,7 +6,6 @@ export interface Shoe {
   age: Age;
   sizes: Array<Size>;
 }
-
 export interface Size {
   size: number;
   quantity: number;

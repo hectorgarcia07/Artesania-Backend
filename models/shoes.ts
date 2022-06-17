@@ -14,7 +14,7 @@ const shoeSchema = new mongoose.Schema<Shoe>({
   price: { type: Number, required: true },
   gender: { type: String, enum: ['male', 'female', 'unixex'], required: true },
   age: { type: String, enum: ['adult', 'kid'], required: true},
-  sizes: [sizeSchema]
+  sizes: [sizeSchema],
 });
 
 shoeSchema.set('toJSON', {

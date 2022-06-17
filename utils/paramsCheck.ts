@@ -3,13 +3,15 @@ import {Shoe, Gender, Size, Age} from '../types/shoe';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramsCheck = (obj: any):Shoe => {
   console.log("Backend", obj);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const newShoeObj:Shoe = {
     name: isName(obj.name),
     color: isColor(obj.color),
     price: isPrice(obj.price),
     gender: isGender(obj.gender),
     age: isAge(obj.age),
-    sizes: isValidSizeArray(obj.sizes)
+    sizes: isValidSizeArray(obj.sizes),
   };
   return newShoeObj;
 };
@@ -70,12 +72,19 @@ const isColor = (name:unknown):string  =>{
   return name;
 };
 
-const isName = (name:unknown):string  =>{
+const isName = (name:unknown):string => {
   if(!name || !isString(name)){
-    throw new Error('Incorrect or missing comment');
+    throw new Error('Incorrect or missing name');
   }
   return name;
 };
+
+/* const isUrl = (url:unknown):string => {
+  if(!url || !isString(url)){
+    throw new Error('Incorrect or missing URL');
+  }
+  return url;
+}; */
 
 const isString = (str:any): str is string => {
   return typeof str === 'string' || str instanceof String;
