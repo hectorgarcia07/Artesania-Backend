@@ -3,8 +3,8 @@ import { Shoe, Size } from '../types/shoe';
 
 //individual sizes of a shoe
 const sizeSchema = new mongoose.Schema<Size>({
-  size: Number,
-  quantity: Number
+  size: { type: Number, required: true},
+  quantity: { type: Number, required: true}
 });
 
 //Will contain 
