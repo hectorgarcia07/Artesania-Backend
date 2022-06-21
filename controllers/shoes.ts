@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import ShoeModel from '../models/shoes';
 import paramsCheck from '../utils/paramsCheck';
+import passport from "passport";
 import express from 'express';
 import {Shoe} from '../types/shoe';
 import shoeServices from '../services/shoeServices';
@@ -15,8 +17,9 @@ Router.get('/', async(_req, res) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.get('/:id', async(req, res) => {
+Router.get('/:id', passport.authenticate('jwt',{session: false}), async(req, res) => {
   try{
+    console.log(req.user);
     const id:string = req.params.id;
     const shoes = await shoeServices.getSpecificShoe(id);
     res.json(shoes);
@@ -31,7 +34,7 @@ Router.get('/:id', async(req, res) => {
 
 //updates the entire object
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.put('/:id', async(req, res) => {
+Router.put('/:id', passport.authenticate('jwt',{session: false}), async(req, res) => {
   const id:string = req.params.id;
   const shoesObj:Shoe = paramsCheck(req.body);
   console.log("BEFORE UPDATE", shoesObj);
@@ -41,7 +44,7 @@ Router.put('/:id', async(req, res) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.delete('/:id', async(req, res) => {
+Router.delete('/:id', passport.authenticate('jwt',{session: false}), async(req, res) => {
   const id:string = req.params.id;
   await shoeServices.deleteShoe(id);
   res.status(204).end();
@@ -88,7 +91,7 @@ Router.delete('/:id', async(req, res) => {
 }); */
 
  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.post('/', async (req, res) => {
+Router.post('/', passport.authenticate('jwt',{session: false}), async (req, res) => {
   try{
     const shoesObj:Shoe = paramsCheck(req.body);
 

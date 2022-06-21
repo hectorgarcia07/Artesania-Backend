@@ -1,11 +1,15 @@
-interface User {
+export interface User {
   username: string;
   passwordHash: string;
+  role: Role;
 }
 
-export interface UserRequest {
+export interface UserRequest{
   username: string;
   password: string;
 }
 
-export default User;
+export enum Role {
+  ADMIN = 'admin',
+  NORMAL = 'normal'
+}

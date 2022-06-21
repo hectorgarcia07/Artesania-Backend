@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import mongoose from "mongoose";
-import UserType from "../types/user";
+import { User, Role } from "../types/user";
 
-const userSchema = new mongoose.Schema<UserType>({
+const userSchema = new mongoose.Schema<User>({
   username: { type: String, required: true},
-  passwordHash: { type: String, required: true}
+  passwordHash: { type: String, required: true},
+  role: {
+    type: String,
+    enum: [Role.NORMAL, Role.ADMIN],
+    required: true
+  }
 });
 
 userSchema.set('toJSON', {

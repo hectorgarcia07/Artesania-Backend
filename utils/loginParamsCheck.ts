@@ -1,6 +1,7 @@
 import {UserRequest} from '../types/user';
+import { isString } from './checkDataType';
 
-export const loginParamsCheck = (obj:any):UserRequest => {
+export const loginUserCredentials = (obj:any):UserRequest => {
   return {
     username: isUsername(obj.username),
     password: isPassword(obj.password)
@@ -19,8 +20,4 @@ const isPassword = (password:unknown):string => {
     throw new Error('Error: Password must provided or a string');
   }
   return password;
-};
-
-const isString = (str:any): str is string => {
-  return typeof str === 'string' || str instanceof String;
 };

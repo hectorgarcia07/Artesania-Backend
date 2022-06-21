@@ -1,4 +1,5 @@
 import {Shoe, Gender, Size, Age} from '../types/shoe';
+import { isString, isNumber } from './checkDataType';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramsCheck = (obj: any):Shoe => {
@@ -85,13 +86,5 @@ const isName = (name:unknown):string => {
   }
   return url;
 }; */
-
-const isString = (str:any): str is string => {
-  return typeof str === 'string' || str instanceof String;
-};
-
-const isNumber = (num:any): num is number => {
-  return typeof num === 'number';
-};
 
 export default paramsCheck;

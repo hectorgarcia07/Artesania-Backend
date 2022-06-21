@@ -1,39 +1,49 @@
 import bcrypt from "bcrypt";
+import passport from "passport";
+import jwt from "jsonwebtoken";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import dotenv from "dotenv";
 import express from "express";
 import User from '../models/user';
-import { loginParamsCheck } from '../utils/loginParamsCheck';
+import { userCredentialParams } from '../utils/signupParamsCheck';
+import { loginUserCredentials } from '../utils/loginParamsCheck';
 
+dotenv.config();
 const usersRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-usersRouter.post('/', async (request, response) => {
-  try{
-    const { username, password } = loginParamsCheck(request.body);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+usersRouter.post('/signup', passport.authenticate('jwt',{session: false}), async (req, res) => {
+  const userParams = userCredentialParams(req.body);
+  userParams.passwordHash = await bcrypt.hash(userParams.passwordHash, 8);
+  const user = new User(userParams);
+  const newUser = await user.save();
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {    
-      return response.status(400).json({      
-        error: 'username must be unique'    
-      });
-    }
+  res.status(200).json({success: "Register successfully", newUser});
+});
 
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-
-    const user = new User({
-      username,
-      passwordHash,
-    });
-
-    const savedUser = await user.save();
-
-    return response.status(201).json(savedUser);
-  }catch(err: unknown){
-    if(err instanceof Error){
-      return response.status(401).json({error: err.message});
-    }
-    return response.status(401).json({error: "Error couldn't create user."});
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+usersRouter.post('/login', async (req, res) => {
+  const userParams = loginUserCredentials(req.body);
+  const user = await User.findOne({username: userParams.username});
+  if(!user || user == null){
+    return res.status(404).json({error: "User or password is invalid"});
   }
+  const passwordIsValid = await bcrypt.compare( userParams.password, user.passwordHash);
+  if(!passwordIsValid){
+    return res.status(401).json({error: "User or password is invalid"});
+  }
+
+  //signing token with user id
+  const token = jwt.sign({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    id: user.id
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  }, process.env.SECRET!, {
+    expiresIn: 86400
+  });
+
+  return res.status(200).json({user, token, message: "Login successfull"});
 });
 
 export default usersRouter;
