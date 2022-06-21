@@ -40,10 +40,10 @@ usersRouter.post('/login', async (req, res) => {
     id: user.id
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   }, process.env.SECRET!, {
-    expiresIn: 86400
+    expiresIn: 60*60
   });
 
-  return res.status(200).json({user, token, message: "Login successfull"});
+  return res.status(200).json({token, message: "Login successfull"});
 });
 
 export default usersRouter;
