@@ -16,6 +16,7 @@ passport.use(new JWTStrategy(
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.SECRET
   }, 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   function (jwtPayload, done){
     return User.findById(jwtPayload.id)
       .then(user => {

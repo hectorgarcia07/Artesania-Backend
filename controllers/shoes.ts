@@ -18,13 +18,14 @@ Router.get('/', async(_req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.get('/:id', passport.authenticate('jwt',{session: false}), async(req, res) => {
+  console.log("GETSSSSSSSSSSSSss");
   try{
     console.log(req.user);
     const id:string = req.params.id;
     const shoes = await shoeServices.getSpecificShoe(id);
     res.json(shoes);
   }catch(e: unknown){
-    let err = "Error getting all shoes: ";
+    let err = "Error getting specific shoe. ";
     if(e instanceof Error){
       err += e.message;
     }

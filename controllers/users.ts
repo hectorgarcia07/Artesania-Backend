@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import passport from "passport";
+//import passport from "passport";
 import jwt from "jsonwebtoken";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dotenv from "dotenv";
@@ -13,7 +13,7 @@ const usersRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-usersRouter.post('/signup', passport.authenticate('jwt',{session: false}), async (req, res) => {
+usersRouter.post('/signup', async (req, res) => {
   const userParams = userCredentialParams(req.body);
   userParams.passwordHash = await bcrypt.hash(userParams.passwordHash, 8);
   const user = new User(userParams);
@@ -23,11 +23,12 @@ usersRouter.post('/signup', passport.authenticate('jwt',{session: false}), async
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-usersRouter.post('/login', async (req, res) => {
+usersRouter.post('/signin', async (req, res) => {
+  console.log("SIGNIN");
   const userParams = loginUserCredentials(req.body);
   const user = await User.findOne({username: userParams.username});
   if(!user || user == null){
-    return res.status(404).json({error: "User or password is invalid"});
+    return res.status(401).json({error: "User or password is invalid"});
   }
   const passwordIsValid = await bcrypt.compare( userParams.password, user.passwordHash);
   if(!passwordIsValid){
