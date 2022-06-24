@@ -3,10 +3,10 @@ import { isString, isNumber } from './checkDataType';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramsCheck = (obj: any):Shoe => {
-  console.log("Backend", obj);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 
   const newShoeObj:Shoe = {
+    url: isUrl(obj.url),
     name: isName(obj.name),
     color: isColor(obj.color),
     price: isPrice(obj.price),
@@ -80,11 +80,11 @@ const isName = (name:unknown):string => {
   return name;
 };
 
-/* const isUrl = (url:unknown):string => {
+const isUrl = (url:unknown):string => {
   if(!url || !isString(url)){
     throw new Error('Incorrect or missing URL');
   }
   return url;
-}; */
+};
 
 export default paramsCheck;

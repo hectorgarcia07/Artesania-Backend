@@ -3,6 +3,7 @@ import ShoeModel from '../models/shoes';
 
 const addNewShoe = async (shoeObj:Shoe) => {
   const newShoe = new ShoeModel.Shoe({
+    url: shoeObj.url,
     name: shoeObj.name,
     color: shoeObj.color,
     price: shoeObj.price,

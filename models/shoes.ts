@@ -9,6 +9,7 @@ const sizeSchema = new mongoose.Schema<Size>({
 
 //Will contain 
 const shoeSchema = new mongoose.Schema<Shoe>({
+  url: { type: String, required: true },
   name: { type: String, required: true },
   color: { type: String, required: true },
   price: { type: Number, required: true },

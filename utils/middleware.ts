@@ -1,8 +1,8 @@
 import { ErrorRequestHandler } from 'express';
 
-const errorHandling:ErrorRequestHandler = (err, _req, res, next) => {
+const errorHandling:ErrorRequestHandler = (err, req, res, next) => {
   console.log("MIDDLE WARE", err.message);
-
+  console.log('Headers: ', req.headers['content-type'])
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return res.status(400).json({error: err.message});
   
