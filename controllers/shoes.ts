@@ -54,34 +54,14 @@ Router.delete('/:id', passport.authenticate('jwt',{session: false}), async(req, 
   res.status(204).end();
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-/* Router.post('/img', authenticate, uploadMiddleware, async (req,res) => {
-  try{
-    await console.log("In img route")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const update = req?.file;
-    const link = (update as any).location
-    console.log('update', (update as any).location);
-    console.log("BODY", req.body);
-    console.log("FILE", req.file)
-    return res.status(200).json({success: 'success', link});
-  }catch(e: unknown){
-    console.log('In catch');
-    let err = '';
-    if(e instanceof Error){
-      err += e.message;
-    }
-    throw new Error(err);
-  }
-}); */
-
 Router.post('/img', authenticate, MulterMiddleware, async (req, res) => {
   try {
-    console.log('in Post request')
+    console.log('in IMG request')
     if(!req.file){
       throw new Error('No file was provided.')
     }
     else{
+      console.log("About to sharpify")
       const file = req.file
       const newFile = await sharpify(file)
 
