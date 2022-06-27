@@ -32,6 +32,7 @@ const upload = multer({
     metadata: function (_req: Express.Request, file: Express.Multer.File, cb: (error: any, metadata?: any) => void) {
       cb(null, {fieldName: file.fieldname});
     },
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function (_req: Express.Request, file: Express.Multer.File, cb: (error: any, key?: string) => void) {
       const re = /(?:\.([^.]+))?$/;
       //const filename = file?.originalname;

@@ -6,11 +6,12 @@ import passport from "passport";
 import express from 'express';
 import {Shoe} from '../types/shoe';
 import shoeServices from '../services/shoeServices';
-import upload from '../services/imageUpload';
+import multer from 'multer'
+import { sharpify, uploadToAWS } from '../services/ImageProccess'
 
 const Router = express.Router();
 const authenticate = passport.authenticate('jwt',{session: false})
-const uploadMiddleware = upload.single("shoe_image")
+const MulterMiddleware = multer().single("shoe_image")
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.get('/', async(_req, res) => {
@@ -53,7 +54,7 @@ Router.delete('/:id', passport.authenticate('jwt',{session: false}), async(req, 
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-Router.post('/img', authenticate, uploadMiddleware, async (req,res) => {
+/* Router.post('/img', authenticate, uploadMiddleware, async (req,res) => {
   try{
     await console.log("In img route")
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -71,7 +72,36 @@ Router.post('/img', authenticate, uploadMiddleware, async (req,res) => {
     }
     throw new Error(err);
   }
-});
+}); */
+
+Router.post('/img', authenticate, MulterMiddleware, async (req, res) => {
+  try {
+    console.log('in Post request')
+    if(!req.file){
+      throw new Error('No file was provided.')
+    }
+    else{
+      const file = req.file
+      const newFile = await sharpify(file)
+
+      const result = await uploadToAWS({
+        Body: newFile,
+        ACL: 'public-read',
+        Bucket: process.env.BUCKETNAME!,
+        ContentType: file.mimetype,
+        Key: `${file.originalname}`
+      })
+      let link = `${process.env.AWSCLOUDFRONT}/${(result as any).Key}`
+      console.log("Link ", link)
+      return res.json({ success: true, link })
+    }
+  } catch (err) {
+    if(err instanceof Error)
+      return res.json({ success: false, error: err.message })
+    return res.json({success: false, error: "Error uploading!"})
+  }
+})
+
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.post('/', authenticate, async (req, res) => {
