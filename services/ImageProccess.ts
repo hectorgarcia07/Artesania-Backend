@@ -14,17 +14,17 @@ export const sharpify = async (originalFile: Express.Multer.File) => {
     }
     const { format } = meta
     const config = {
-      quality: 80
+      quality: 70
     }
 
-    if(format == 'jpeg' || format == 'jpg'){ 
+    if(format == 'jpeg' || format == 'jpg'){
       const newFile = await image.jpeg(config)
-      .resize({ width: 1000, withoutEnlargement: true })
+      .resize({ width: 470, withoutEnlargement: true })
       return newFile
     }
     else if(format == 'png'){
       const newFile = await image.png(config)
-      .resize({ width: 1000, withoutEnlargement: true })
+      .resize({ width: 470, withoutEnlargement: true })
       return newFile
     }
     throw new Error("Unable to sharpify due to invalid file type.")
