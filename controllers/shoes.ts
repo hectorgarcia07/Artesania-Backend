@@ -48,6 +48,7 @@ Router.put('/:id', authenticate, async(req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.delete('/:id', passport.authenticate('jwt',{session: false}), async(req, res) => {
+  console.log("Deleting ", req.params.id)
   const id:string = req.params.id;
   await shoeServices.deleteShoe(id);
   res.status(204).end();
