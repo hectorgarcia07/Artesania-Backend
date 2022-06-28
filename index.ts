@@ -10,6 +10,7 @@ import ShoesRouter from './controllers/shoes';
 import middleware from './utils/middleware';
 import dotenv from "dotenv";
 import UserRouter from "./controllers/users";
+import path from "path";
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-app.use(express.static('build'))
+app.use(express.static(path.join(__dirname, 'build')));
 
 mongoose.connect(url)
   .then(() => {
