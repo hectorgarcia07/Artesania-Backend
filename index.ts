@@ -35,7 +35,7 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message);
   });
 
-app.get('/', function (_req, res) {
+app.get('/*', function (_req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
