@@ -35,12 +35,13 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message);
   });
 
+app.use('/api/users', UserRouter);
+app.use('/api/shoes', ShoesRouter);
+
 app.get('/*', function (_req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.use('/api/users', UserRouter);
-app.use('/api/shoes', ShoesRouter);
 app.use(middleware.errorHandling);
 
 app.listen(PORT, () => {
