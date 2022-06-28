@@ -35,7 +35,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "postinstall": "tsc && mv -i -v public dist/ && rm -v -rf src",
+    "postinstall": "tsc && mv -i -v dist/ && rm -v -rf src",
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts .",
