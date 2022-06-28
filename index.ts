@@ -20,11 +20,7 @@ const app = express();
 
 /* App Config */
 app.use(cors());
-app.use(expressCspHeader({
-  directives: {
-      'default-src': [SELF],
-  }
-}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
