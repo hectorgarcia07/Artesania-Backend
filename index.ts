@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-app.use(express.static(__dirname + '/public/build/'));
+app.use(express.static('build'))
 
 mongoose.connect(url)
   .then(() => {
