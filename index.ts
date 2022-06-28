@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { expressCspHeader, SELF } from 'express-csp-header'
 import mongoose from "mongoose";
 import express from 'express';
 import "express-async-errors";
