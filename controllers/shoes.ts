@@ -5,9 +5,12 @@ import paramsCheck from '../utils/paramsCheck';
 import passport from "passport";
 import express from 'express';
 import {Shoe} from '../types/shoe';
+import { Role } from '../types/user'
 import shoeServices from '../services/shoeServices';
 import multer from 'multer'
 import { sharpify, uploadToAWS } from '../services/ImageProccess'
+import config from '../utils/config'
+import { checkRole } from '../services/userServices'
 
 const Router = express.Router();
 const authenticate = passport.authenticate('jwt',{session: false})
@@ -38,7 +41,7 @@ Router.get('/:id', authenticate, async(req, res) => {
 
 //updates the entire object
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.put('/:id', authenticate, async(req, res) => {
+Router.put('/:id', authenticate, checkRole(Role.ADMIN), async(req, res) => {
   const id:string = req.params.id;
   const shoesObj:Shoe = paramsCheck(req.body);
   const updatedShoe = await shoeServices.updateNewShoe(id, shoesObj);
@@ -47,14 +50,15 @@ Router.put('/:id', authenticate, async(req, res) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.delete('/:id', passport.authenticate('jwt',{session: false}), async(req, res) => {
+Router.delete('/:id', authenticate, checkRole(Role.ADMIN), async(req, res) => {
   console.log("Deleting ", req.params.id)
   const id:string = req.params.id;
   await shoeServices.deleteShoe(id);
   res.status(204).end();
 });
 
-Router.post('/img', authenticate, MulterMiddleware, async (req, res) => {
+Router.post('/img', authenticate, MulterMiddleware, checkRole(Role.ADMIN), async (req, res) => {
+  console.log("USER ", req.user)
   try {
     console.log('in IMG request')
     if(!req.file){
@@ -68,13 +72,13 @@ Router.post('/img', authenticate, MulterMiddleware, async (req, res) => {
       const result = await uploadToAWS({
         Body: newFile,
         ACL: 'public-read',
-        Bucket: process.env.BUCKETNAME!,
+        Bucket: config.BUCKETNAME!,
         ContentType: file.mimetype,
         Key: `${file.originalname}`
       })
-      let link = `${process.env.AWSCLOUDFRONT}/${(result as any).Key}`
+      let link = `${config.AWSCLOUDFRONT}/${(result as any).Key}`
       console.log("Link ", link)
-      return res.json({ success: true, link })
+      return res.status(201).json({ success: true, link })
     }
   } catch (err) {
     if(err instanceof Error)
@@ -85,7 +89,7 @@ Router.post('/img', authenticate, MulterMiddleware, async (req, res) => {
 
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.post('/', authenticate, async (req, res) => {
+Router.post('/', authenticate, checkRole(Role.ADMIN), async (req, res) => {
   try{
     const shoesObj:Shoe = paramsCheck(req.body);
     console.log("SAVING TO DB");

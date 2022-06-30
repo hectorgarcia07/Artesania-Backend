@@ -13,3 +13,9 @@ export enum Role {
   ADMIN = 'admin',
   NORMAL = 'normal'
 }
+
+export interface TokenUser{
+  username: string;
+  role: Role;
+  id: string;
+}

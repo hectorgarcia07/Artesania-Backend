@@ -14,12 +14,12 @@ const userSchema = new mongoose.Schema<User>({
 
 userSchema.set('toJSON', {
   transform: (_document, returnedObject) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    returnedObject.id = returnedObject._id.toString();
+    const res:unknown = returnedObject._id.toString();
+    returnedObject.id = res;
     delete returnedObject._id;
     delete returnedObject.__v;
-    // the passwordHash should not be revealed
+
     delete returnedObject.passwordHash;
   }
 });

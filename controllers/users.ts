@@ -1,14 +1,11 @@
 import bcrypt from "bcrypt";
-//import passport from "passport";
-import jwt from "jsonwebtoken";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import dotenv from "dotenv";
 import express from "express";
 import User from '../models/user';
 import { userCredentialParams } from '../utils/signupParamsCheck';
 import { loginUserCredentials } from '../utils/loginParamsCheck';
+import { authenticateUser } from '../services/userServices'
+import logger from '../utils/loggers'
 
-dotenv.config();
 const usersRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -24,27 +21,16 @@ usersRouter.post('/signup', async (req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 usersRouter.post('/signin', async (req, res) => {
-  console.log("SIGNIN");
+  logger.info("SIGING IN")
+
   const userParams = loginUserCredentials(req.body);
-  const user = await User.findOne({username: userParams.username});
-  if(!user || user == null){
-    return res.status(401).json({error: "User or password is invalid"});
-  }
-  const passwordIsValid = await bcrypt.compare( userParams.password, user.passwordHash);
-  if(!passwordIsValid){
-    return res.status(401).json({error: "User or password is invalid"});
-  }
+  const user = await authenticateUser(userParams)
 
-  //signing token with user id
-  const token = jwt.sign({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    id: user.id
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  }, process.env.SECRET!, {
-    expiresIn: 60*60
-  });
-
-  return res.status(200).json({token, message: "Login successfull"});
+  if(!user){
+    return res.status(401).json({user: undefined, message: "Invalid username or password", success: false})
+  }
+  console.log("SUCESS", user)
+  return res.status(200).json({...user, message: "Login successfull", success: true})
 });
 
 export default usersRouter;

@@ -4,6 +4,7 @@ import passport from 'passport';
 import passportJWT from 'passport-jwt';
 import User from '../models/user';
 import dotenv from "dotenv";
+import { TokenUser } from '../types/user'
 
 dotenv.config();
 
@@ -20,8 +21,9 @@ passport.use(new JWTStrategy(
   function (jwtPayload, done){
     return User.findById(jwtPayload.id)
       .then(user => {
+        const userObj:TokenUser = JSON.parse(JSON.stringify(user))
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return done(null, user);
+        return done(null, userObj);
       })
       .catch(err => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call

@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler, RequestHandler } from 'express';
 
 const errorHandling:ErrorRequestHandler = (err, req, res, next) => {
   console.log("MIDDLE WARE", err.message);
@@ -9,6 +9,11 @@ const errorHandling:ErrorRequestHandler = (err, req, res, next) => {
   next(err);
 };
 
+const unknownEndpoint:RequestHandler = (_req, res) => {
+  res.send(404).send({error: 'Unknown endpont'})
+}
+
 export default {
-  errorHandling
+  errorHandling,
+  unknownEndpoint
 };

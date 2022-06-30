@@ -6,6 +6,6 @@ const error = (...params:any[]) => {
   console.error(...params)
 }
 
-module.exports = {
+export default {
   info, error
 }
