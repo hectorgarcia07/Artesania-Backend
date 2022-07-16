@@ -87,12 +87,10 @@ Router.post('/img', authenticate, MulterMiddleware, checkRole(Role.ADMIN), async
   }
 })
 
-
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 Router.post('/', authenticate, checkRole(Role.ADMIN), async (req, res) => {
   try{
     const shoesObj:Shoe = paramsCheck(req.body);
-    console.log("SAVING TO DB");
     const newShoeObj = await shoeServices.addNewShoe(shoesObj);
     console.log('saved', newShoeObj);
     res.status(201).json(newShoeObj);

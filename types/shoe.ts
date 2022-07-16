@@ -13,5 +13,12 @@ export interface Size {
   quantity: number;
 }
 
-export type Gender = 'male' | 'female' | 'unisex';
-export type Age = 'adult' | 'kid';
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+  UNISEX = 'unisex'
+}
+export enum Age {
+  ADULT = 'adult',
+  KID = 'kid'
+}

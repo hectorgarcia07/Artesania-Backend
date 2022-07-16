@@ -5,7 +5,7 @@ require('./utils/passport');
 import cors from 'cors';
 import ShoesRouter from './controllers/shoes';
 import UserRouter from "./controllers/users";
-import middleware from './utils/middleware';
+import middleware from './middleware/errorHandling';
 import path from "path";
 import config from './utils/config'
 import logger from './utils/loggers'

@@ -7,7 +7,7 @@ import "express-async-errors";
 require('./utils/passport');
 import cors from 'cors';
 import ShoesRouter from './controllers/shoes';
-import middleware from './utils/middleware';
+import middleware from './middleware/errorHandling';
 import dotenv from "dotenv";
 import UserRouter from "./controllers/users";
 import path from "path";
