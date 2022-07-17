@@ -1,5 +1,4 @@
 import { Shoe, Gender, Size, Age } from '../types/shoe';
-import { ShoeError } from '../types/shoeError';
 import { isString, isNumber } from './checkDataType';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,8 +16,6 @@ const paramsCheck = (obj: any):Shoe => {
   
   return newShoeObj;
 };
-
-const errors:ShoeError = {}
 
 const isValidSizeArray = (sizes:unknown):Size[] => {
   if(!Array.isArray(sizes)){
