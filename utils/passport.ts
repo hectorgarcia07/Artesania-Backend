@@ -21,11 +21,13 @@ passport.use(new JWTStrategy(
   function (jwtPayload, done){
     return User.findById(jwtPayload.id)
       .then(user => {
+        console.log("FOUND, ", user)
         const userObj:TokenUser = JSON.parse(JSON.stringify(user))
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return done(null, userObj);
       })
       .catch(err => {
+        console.log(err)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return done(err);

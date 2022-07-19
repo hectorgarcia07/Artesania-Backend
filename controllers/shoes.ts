@@ -17,7 +17,7 @@ const authenticate = passport.authenticate('jwt',{session: false})
 const MulterMiddleware = multer().single("shoe_image")
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-Router.get('/', async(_req, res) => {
+Router.get('/', authenticate, async(_req, res) => {
   const shoes = await ShoeModel.Shoe.find({});
   res.json(shoes);
 });
