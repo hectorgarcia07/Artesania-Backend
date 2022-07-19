@@ -14,7 +14,7 @@ export const authenticateUser = async (userParams:UserRequest) => {
   const isAuthenticated = user && await bcrypt.compare( userParams.password, user.passwordHash)
 
   if(!isAuthenticated){
-    return undefined
+    return null
   }
 
   //signing token with user id

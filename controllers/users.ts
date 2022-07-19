@@ -27,7 +27,7 @@ usersRouter.post('/signin', async (req, res) => {
   const user = await authenticateUser(userParams)
 
   if(!user){
-    return res.status(401).json({user: undefined, message: "Invalid username or password", success: false})
+    return res.status(401).json({ message: "Invalid username or password", success: false})
   }
   console.log("SUCESS", user)
   return res.status(200).json({...user, message: "Login successfull", success: true})
