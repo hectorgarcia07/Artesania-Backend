@@ -32,6 +32,7 @@ app.use('/api/shoes', ShoesRouter);
 app.get('/*', function (_req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
 app.use(middleware.errorHandling);
 app.use(middleware.unknownEndpoint)
 
