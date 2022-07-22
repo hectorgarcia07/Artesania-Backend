@@ -42,6 +42,6 @@
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts .",
     "deploy": "git add . && git commit -m Heroku && git push heroku main",
-    "build:ui": "cd ./public && rm -rf build && cd ../../frontend/ && npm run build && cp -r build ../backend/public"
+    "build:ui": "rm -rf build && cd ../frontend/ && npm run build && cp -r build ../backend/"
   }
 }
