@@ -46,7 +46,7 @@ Router.put('/:id', authenticate, checkRole(Role.ADMIN), async(req, res) => {
   const shoesObj:Shoe = paramsCheck(req.body);
   const updatedShoe = await shoeServices.updateNewShoe(id, shoesObj);
   console.log('AFTERUPDATE', updatedShoe);
-  res.json(updatedShoe);
+  res.status(200).json(updatedShoe);
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
